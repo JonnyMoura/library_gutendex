@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import './GutenbergSearch.css'; // Import the CSS file
+import './GutenbergSearch.css'; 
 
 const API_BASE_URL = 'https://gutendex.com';
 
@@ -224,8 +224,8 @@ const GutenbergSearch = () => {
                 <form
             className="search-form"
             onSubmit={(e) => {
-              e.preventDefault(); // Prevents the default form submission
-              handleSearch(); // Call your search function
+              e.preventDefault(); 
+              handleSearch();
             }}
           >
             <input
