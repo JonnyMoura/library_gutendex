@@ -158,7 +158,8 @@ body {
     border-radius: 8px;
     background-color: rgba(175, 153, 180, 0.336);
     display: flex;
-    box-shadow: #0a0a0a;
+   
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); 
     
     align-items: flex end;
   }
@@ -167,6 +168,7 @@ body {
     grid-template-columns: 3fr 1fr;
     gap:4vw;
     width: 100%;
+    
     
   }
   
@@ -228,14 +230,14 @@ body {
     bottom: 0;
     width: 100%;
     padding: 1vh;
-    background-color: #f8f8f8;
+    background-color: rgba(175, 153, 180, 0.336);
     box-shadow: 0 -4px 8px rgba(0, 0, 0, 0.1);
   }
   
   
   
   .pagination-container span {
-    padding: 1vh;
+    padding: 2vh;
     font-size: 1.2vw;
   }
   
@@ -273,6 +275,7 @@ body {
       padding: 1.3vw;
       border-radius: 5px;
       background-color: rgba(175, 153, 180, 0.45);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
       
     }
   
@@ -333,4 +336,10 @@ body {
     .pagination-container {
       width: 100%;
     }
+
+
+    .pagination-container span {
+        
+        font-size: 2vw;
+      }
   }

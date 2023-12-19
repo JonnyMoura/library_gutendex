@@ -390,7 +390,7 @@ const GutenbergSearch = () => {
           >
             Previous
           </button>
-          <span> Page {currentPage} </span>
+          <span > Page {currentPage} </span>
           <button
             type="button"
             className="btn41-43 btn-41"
