@@ -64,14 +64,24 @@ function filterBooks(books, filterType, filterValue) {
 
   switch (filterType) {
     case 'language':
-      const languages = Array.from(new Set(books.flatMap(book => book.languages)));
       return books.filter(book => book.languages.includes(filterValue));
 
     case 'author_year':
-      const authorYears = Array.from(new Set(books.flatMap(book => [book.authors[0].birth_year, book.authors[0].death_year])));
-      return books.filter(book =>
-        (book.authors[0].birth_year <= filterValue && filterValue <= book.authors[0].death_year)
-      );
+      return books.filter(book => {
+        const authors = book.authors || []; // Handle null or undefined authors
+        const birthYears = authors.map(author => author.birth_year).filter(year => year !== null);
+        const deathYears = authors.map(author => author.death_year).filter(year => year !== null);
+
+        const minBirthYear = Math.min(...birthYears);
+        const maxDeathYear = Math.max(...deathYears);
+
+        return (
+          minBirthYear !== undefined &&
+          maxDeathYear !== undefined &&
+          minBirthYear <= filterValue &&
+          filterValue <= maxDeathYear
+        );
+      });
 
     default:
       console.error('Invalid filter type.');
@@ -88,7 +98,7 @@ const GutenbergSearch = () => {
   const [filterType, setFilterType] = useState('');
   const [filterValue, setFilterValue] = useState('');
   const [selectedSearchType, setSelectedSearchType] = useState('default');
-  const [isAuthorYearFilter, setIsAuthorYearFilter] = useState(false);
+  const [isAuthorYearFilter, setIsAuthorYearFilter] = useState(true);
   const [nextPageUrl, setNextPageUrl] = useState(null);
   const [prevPageUrl, setPrevPageUrl] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
@@ -161,9 +171,7 @@ const GutenbergSearch = () => {
     }
   };
 
-  const handleApplyAuthorYearFilter = () => {
-    setIsAuthorYearFilter(!isAuthorYearFilter);
-  };
+  
 
   return (
     <div>
@@ -184,37 +192,35 @@ const GutenbergSearch = () => {
 
         {/* Language Filter */}
         <select value={filterType} onChange={(e) => setFilterType(e.target.value)}>
-          <option value="">Select Filter Type</option>
-          <option value="language">Language</option>
+          <option value=""  >Select Filter Type</option>
+          <option value="language" >Language</option>
           <option value="author_year">Author Year</option>
         </select>
 
         {/* Language Dropdown (if Language Filter is selected) */}
         {filterType === 'language' && (
           <select onChange={(e) => setFilterValue(e.target.value)}>
-            <option value="">Select Language</option>
+            <option value="" >Select Language</option>
             {/* Map languages from the books to dropdown options */}
             {Array.from(new Set(results.flatMap(book => book.languages))).map(language => (
-              <option key={language} value={language}>{language}</option>
+              <option key={language} value={language} >{language}</option>
             ))}
           </select>
         )}
 
         {/* Author Year Filter */}
         {filterType === 'author_year' && (
-          <div>
-            <label>Author Year: </label>
-            <input
-              type="number"
-              value={filterValue}
-              onChange={(e) => {
-                setFilterValue(e.target.value);
-                // Toggle the state on each input change
-                setIsAuthorYearFilter(!isAuthorYearFilter);
-              }}
-              placeholder="Enter Year"
-            />
-          </div>
+           <div>
+           <label>Author Year: </label>
+           <input
+             type="number"
+             value={filterValue}
+             onChange={(e) => setFilterValue(e.target.value)}
+           
+             placeholder="Enter Year"
+           />
+           
+         </div>
         )}
 
         <button type="button" onClick={() => setSortOrder('ascending_popular')}>Sort ascending</button>
