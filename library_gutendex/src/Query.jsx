@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import './GutenbergSearch.css'; // Import the CSS file
 
 const API_BASE_URL = 'https://gutendex.com';
 
@@ -64,13 +65,17 @@ function filterBooks(books, filterType, filterValue) {
 
   switch (filterType) {
     case 'language':
-      return books.filter(book => book.languages.includes(filterValue));
+      return books.filter((book) => book.languages.includes(filterValue));
 
     case 'author_year':
-      return books.filter(book => {
+      return books.filter((book) => {
         const authors = book.authors || []; // Handle null or undefined authors
-        const birthYears = authors.map(author => author.birth_year).filter(year => year !== null);
-        const deathYears = authors.map(author => author.death_year).filter(year => year !== null);
+        const birthYears = authors
+          .map((author) => author.birth_year)
+          .filter((year) => year !== null);
+        const deathYears = authors
+          .map((author) => author.death_year)
+          .filter((year) => year !== null);
 
         const minBirthYear = Math.min(...birthYears);
         const maxDeathYear = Math.max(...deathYears);
@@ -94,7 +99,7 @@ const GutenbergSearch = () => {
   const [results, setResults] = useState([]);
   const [filteredResults, setFilteredResults] = useState([]);
   const [sortedResults, setSortedResults] = useState([]);
-  const [sortOrder, setSortOrder] = useState('descending_popular');
+  const [sortOrder, setSortOrder] = useState('');
   const [filterType, setFilterType] = useState('');
   const [filterValue, setFilterValue] = useState('');
   const [selectedSearchType, setSelectedSearchType] = useState('default');
@@ -102,16 +107,31 @@ const GutenbergSearch = () => {
   const [nextPageUrl, setNextPageUrl] = useState(null);
   const [prevPageUrl, setPrevPageUrl] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
+  const [isLoading, setIsLoading] = useState(false);
+  const [message, setMessage] = useState('');
+
+
+
+  useEffect(() => {
+    // Fetch all books when the component mounts
+    handleShowAllBooks();
+  }, []);
+
 
   useEffect(() => {
     const fetchData = async () => {
       try {
+        setIsLoading(true);
+
         if (results.length > 0) {
           const sorted = await sortBooks(results, sortOrder);
           setSortedResults(sorted);
         }
+
+        setIsLoading(false);
       } catch (error) {
         console.error('Error sorting books:', error);
+        setIsLoading(false);
       }
     };
 
@@ -121,7 +141,15 @@ const GutenbergSearch = () => {
   useEffect(() => {
     const filtered = filterBooks(sortedResults, filterType, filterValue);
     setFilteredResults(filtered);
-  }, [sortedResults, filterType, filterValue]);
+
+    
+    if (!isLoading && filtered.length < 1 && searchTerm !== ''){
+      setMessage("No results found");
+    }
+    else{
+      setMessage('');
+    }
+  }, [sortedResults, filterType, filterValue, searchTerm, message]);
 
   const handleNextPage = () => {
     if (nextPageUrl) {
@@ -145,6 +173,8 @@ const GutenbergSearch = () => {
 
   const handleSearch = async (page = 1) => {
     try {
+      setIsLoading(true);
+
       const data = await searchBooks(searchTerm, selectedSearchType, sortOrder, page);
       setResults(data.results);
       setFilteredResults(data.results);
@@ -152,13 +182,25 @@ const GutenbergSearch = () => {
       setNextPageUrl(data.next);
       setPrevPageUrl(data.previous);
       setCurrentPage(page);
+
+      setIsLoading(false);
+      if (!isLoading && data.results.length < 1 && searchTerm !== ''){
+        setMessage("No results found");
+      }
+      else{
+        setMessage('');
+      }
     } catch (error) {
       console.error('Error in search:', error);
+      setIsLoading(false);
+      setMessage('Error searching for books');
     }
   };
 
   const handleShowAllBooks = async (page = 1) => {
     try {
+      setIsLoading(true);
+
       const data = await getBookList(sortOrder, page);
       setResults(data.results);
       setFilteredResults(data.results);
@@ -166,105 +208,199 @@ const GutenbergSearch = () => {
       setNextPageUrl(data.next);
       setPrevPageUrl(data.previous);
       setCurrentPage(page);
+
+      setIsLoading(false);
     } catch (error) {
       console.error('Error getting all books:', error);
+      setIsLoading(false);
+      setMessage('Error getting books');
     }
   };
 
-  
-
   return (
-    <div>
-      <form>
-        <input
-          type="text"
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          placeholder="Search by title, author, topic, etc."
-        />
+    <div className="gutenberg-container">
+      {/* Navbar */}
+      <div className="navbar-container">
+                <form
+            className="search-form"
+            onSubmit={(e) => {
+              e.preventDefault(); // Prevents the default form submission
+              handleSearch(); // Call your search function
+            }}
+          >
+            <input
+              type="text"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              placeholder="Search title, author or topic"
+            />
 
-        <select value={selectedSearchType} onChange={(e) => setSelectedSearchType(e.target.value)}>
-          <option value="default">Default</option>
-          <option value="topic">Topic</option>
-        </select>
+            <select
+              value={selectedSearchType}
+              onChange={(e) => setSelectedSearchType(e.target.value)}
+            >
+              <option value="default">Default</option>
+              <option value="topic">Topic</option>
+            </select>
 
-        <button type="button" onClick={() => handleSearch()}>Search</button>
+            <button type="submit" className="btn41-43 btn-41">
+              Search
+            </button>
 
-        {/* Language Filter */}
-        <select value={filterType} onChange={(e) => setFilterType(e.target.value)}>
-          <option value=""  >Select Filter Type</option>
-          <option value="language" >Language</option>
-          <option value="author_year">Author Year</option>
-        </select>
+            <button
+              type="button"
+              className="btn41-43 btn-41"
+              onClick={() => handleShowAllBooks()}
+            >
+              Get All Books
+            </button>
 
-        {/* Language Dropdown (if Language Filter is selected) */}
-        {filterType === 'language' && (
-          <select onChange={(e) => setFilterValue(e.target.value)}>
-            <option value="" >Select Language</option>
-            {/* Map languages from the books to dropdown options */}
-            {Array.from(new Set(results.flatMap(book => book.languages))).map(language => (
-              <option key={language} value={language} >{language}</option>
-            ))}
-          </select>
-        )}
 
-        {/* Author Year Filter */}
-        {filterType === 'author_year' && (
-           <div>
-           <label>Author Year: </label>
-           <input
-             type="number"
-             value={filterValue}
-             onChange={(e) => setFilterValue(e.target.value)}
-           
-             placeholder="Enter Year"
-           />
-           
-         </div>
-        )}
+          {/* Filters in Navbar */}
+          <div className="filter-container">
+            <select
+              onChange={(e) => {
+                setFilterType('language');
+                setFilterValue(e.target.value);
+              }}
+              value={filterValue}
+            >
+              <option value="">Select Language</option>
+              {Array.from(new Set(results.flatMap((book) => book.languages))).map((language) => (
+                <option key={language} value={language}>
+                  {language}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div className="filter-container">
+            <input
+              type="number"
+              value={filterValue}
+              onChange={(e) => {
+                setFilterType('author_year');
+                setFilterValue(e.target.value);
+              }}
+              placeholder="See if author was alive that year"
+            />
+          </div>
+          <div className="filter-container ">
+            <select value={sortOrder} onChange={(e) => setSortOrder(e.target.value)}>
+              <option value="">Sort by</option>
+              <option value="ascending_popular">Sort by Least Popular</option>
+              <option value="descending_popular">Sort by Most Popular</option>
+              <option value="alphabetical">Sort A-Z</option>
+              <option value="reverse_alphabetical">Sort Z-A</option>
+            </select>
+          </div>
+        </form>
 
-        <button type="button" onClick={() => setSortOrder('ascending_popular')}>Sort ascending</button>
-        <button type="button" onClick={() => setSortOrder('descending_popular')}>Sort descending</button>
-        <button type="button" onClick={() => setSortOrder('alphabetical')}>Sort alphabetical</button>
-        <button type="button" onClick={() => setSortOrder('reverse_alphabetical')}>Sort reverse alphabetical</button>
+        <a href="https://gutendex.com" className="gutendex-link">
+          Gutendex
+        </a>
+      </div>
 
-        <button type="button" onClick={() => handleShowAllBooks()}>Show All Books</button>
-      </form>
+      {/* Results */}
+      <div className="results-container">
+        {/* Show loading message */}
+        {isLoading && <p>Loading... Waiting for Gutendex API</p>}
 
-      <ul>
-        {isAuthorYearFilter
-          ? filteredResults.map((book) => (
-              <li key={book.id}>
-                <p>Title: {book.title}</p>
-                <p>Author: {book.authors.map(author => author.name).join(', ')}</p>
-              </li>
-            ))
-          : sortedResults.map((book) => (
-              <li key={book.id}>
-                <p>Title: {book.title}</p>
-                <p>Author: {book.authors.map(author => author.name).join(', ')}</p>
-              </li>
-            ))}
-      </ul>
+        {!isLoading && message && <p>{message}</p>}
+       
+
+        <ul>
+          {isAuthorYearFilter
+            ? filteredResults.map((book) => (
+                <li key={book.id} className="hover-effect">
+                  <div className="book-container">
+                    <div className="info-container">
+                      <div className="title-container">
+                        <p className="titles">Title:</p>
+                        <p>{book.title}</p>
+                      </div>
+                      <div className="author-container">
+                        <p className="titles">Author:</p>
+                        <p>{book.authors.map((author) => author.name).join(', ')}</p>
+                      </div>
+                      <div className="bookshelves-container">
+                        <p className="titles">Categories:</p>
+                        <p>{book.bookshelves.join(', ')}</p>
+                      </div>
+                      <div className="language-container">
+                        <p className="titles">Language:</p>
+                        <p>{book.languages.join(', ')}</p>
+                      </div>
+                    </div>
+                    <div className="book-image hover-effect">
+                      <a
+                        href={book.formats['text/html']}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        <img src={book.formats['image/jpeg']} alt="Book Cover" />
+                      </a>
+                    </div>
+                  </div>
+                </li>
+              ))
+            : sortedResults.map((book) => (
+                <li key={book.id} className="hover-effect">
+                  <div className="book-container">
+                    <div className="info-container">
+                      <div className="title-container">
+                        <p className="titles">Title:</p>
+                        <p>{book.title}</p>
+                      </div>
+                      <div className="author-container">
+                        <p className="titles">Author:</p>
+                        <p>{book.authors.map((author) => author.name).join(', ')}</p>
+                      </div>
+                      <div className="bookshelves-container">
+                        <p className="titles">Categories:</p>
+                        <p>{book.bookshelves.join(', ')}</p>
+                      </div>
+                      <div className="language-container">
+                        <p className="titles">Language:</p>
+                        <p>{book.languages.join(', ')}</p>
+                      </div>
+                    </div>
+                    <div className="book-image hover-effect">
+                      <a
+                        href={book.formats['text/html']}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        <img src={book.formats['image/jpeg']} alt="Book Cover" />
+                      </a>
+                    </div>
+                  </div>
+                </li>
+              ))}
+        </ul>
+      </div>
 
       {/* Pagination Footer */}
-      <div>
-        <button
-          type="button"
-          onClick={handlePreviousPage}
-          disabled={!prevPageUrl}
-        >
-          Previous
-        </button>
-        <span> Page {currentPage} </span>
-        <button
-          type="button"
-          onClick={handleNextPage}
-          disabled={!nextPageUrl}
-        >
-          Next
-        </button>
-      </div>
+      {nextPageUrl || prevPageUrl ? (
+        <div className="pagination-container">
+          <button
+            type="button"
+            className="btn41-43 btn-41"
+            onClick={handlePreviousPage}
+            disabled={!prevPageUrl}
+          >
+            Previous
+          </button>
+          <span> Page {currentPage} </span>
+          <button
+            type="button"
+            className="btn41-43 btn-41"
+            onClick={handleNextPage}
+            disabled={!nextPageUrl}
+          >
+            Next
+          </button>
+        </div>
+      ) : null}
     </div>
   );
 };
