@@ -1,18 +1,18 @@
 {
   "files": {
-    "main.css": "/library_gutendex/static/css/main.d7504bf8.css",
+    "main.css": "/library_gutendex/static/css/main.f72a08cc.css",
     "main.js": "/library_gutendex/static/js/main.01064c3d.js",
     "static/js/787.eaa34915.chunk.js": "/library_gutendex/static/js/787.eaa34915.chunk.js",
     "static/media/NanumMyeongjo-Regular.ttf": "/library_gutendex/static/media/NanumMyeongjo-Regular.01893c39cd1a403ef0a5.ttf",
     "static/media/Arvo-Regular.ttf": "/library_gutendex/static/media/Arvo-Regular.e3d3d53c44db025c4592.ttf",
     "static/media/logo.svg": "/library_gutendex/static/media/logo.6ce24c58023cc2f8fd88fe9d219db6c6.svg",
     "index.html": "/library_gutendex/index.html",
-    "main.d7504bf8.css.map": "/library_gutendex/static/css/main.d7504bf8.css.map",
+    "main.f72a08cc.css.map": "/library_gutendex/static/css/main.f72a08cc.css.map",
     "main.01064c3d.js.map": "/library_gutendex/static/js/main.01064c3d.js.map",
     "787.eaa34915.chunk.js.map": "/library_gutendex/static/js/787.eaa34915.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.d7504bf8.css",
+    "static/css/main.f72a08cc.css",
     "static/js/main.01064c3d.js"
   ]
 }
