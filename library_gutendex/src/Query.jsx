@@ -222,6 +222,7 @@ const GutenbergSearch = () => {
     try {
       
       setSearchTerm(authorName);
+      setSelectedSearchType('default');
       setSearchTrigger(true);
     } catch (error) {
       console.error('Error handling author click:', error);
