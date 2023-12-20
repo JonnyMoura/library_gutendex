@@ -204,6 +204,17 @@ body {
     
     
   }
+
+
+  .clickable-text {
+    cursor: pointer;
+    transition: color 0.3s, text-shadow 0.3s;
+  }
+  
+  .clickable-text:hover {
+    color: #000000; 
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8); 
+  }
   
   .info-container {
     

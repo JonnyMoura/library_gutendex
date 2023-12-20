@@ -109,7 +109,7 @@ const GutenbergSearch = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
   const [message, setMessage] = useState('');
-
+  const [searchTrigger, setSearchTrigger] = useState(false);
 
 
   useEffect(() => {
@@ -217,6 +217,35 @@ const GutenbergSearch = () => {
     }
   };
 
+
+  const handleAuthorClick = (authorName) => {
+    try {
+      
+      setSearchTerm(authorName);
+      setSearchTrigger(true);
+    } catch (error) {
+      console.error('Error handling author click:', error);
+    }
+  };
+  
+  const handleBookshelfClick = (bookshelf) => {
+    try {
+      
+      setSearchTerm(bookshelf);
+      setSelectedSearchType('topic');
+      setSearchTrigger(true);
+    } catch (error) {
+      console.error('Error handling bookshelf click:', error);
+    }
+  };
+  
+  
+  useEffect(() => {
+    if (searchTrigger) {
+      handleSearch();
+      setSearchTrigger(false);
+    }
+  }, [searchTerm, searchTrigger]);
   return (
     <div className="gutenberg-container">
       {/* Navbar */}
@@ -321,11 +350,31 @@ const GutenbergSearch = () => {
                       </div>
                       <div className="author-container">
                         <p className="titles">Author:</p>
-                        <p>{book.authors.map((author) => author.name).join(', ')}</p>
+                        {book.authors.map((author, index) => (
+                                          <React.Fragment key={author.name}>
+                                            <span
+                                              className="clickable-text"
+                                              onClick={() => handleAuthorClick(author.name)}
+                                            >
+                                              {author.name}
+                                            </span>
+                                            {index < book.authors.length - 1 && "; "}
+                                          </React.Fragment>
+                                        ))}
                       </div>
                       <div className="bookshelves-container">
                         <p className="titles">Categories:</p>
-                        <p>{book.bookshelves.join(', ')}</p>
+                        {book.bookshelves.map((bookshelf, index) => (
+                                    <React.Fragment key={bookshelf}>
+                                      <span
+                                        className="clickable-text"
+                                        onClick={() => handleBookshelfClick(bookshelf)}
+                                      >
+                                        {bookshelf}
+                                      </span>
+                                      {index < book.bookshelves.length - 1 && "; "}
+                                    </React.Fragment>
+                                  ))}
                       </div>
                       <div className="language-container">
                         <p className="titles">Language:</p>
@@ -355,11 +404,31 @@ const GutenbergSearch = () => {
                       </div>
                       <div className="author-container">
                         <p className="titles">Author:</p>
-                        <p>{book.authors.map((author) => author.name).join(', ')}</p>
+                        {book.authors.map((author, index) => (
+                                      <React.Fragment key={author.name}>
+                                        <span
+                                          className="clickable-text"
+                                          onClick={() => handleAuthorClick(author.name)}
+                                        >
+                                          {author.name}
+                                        </span>
+                                        {index < book.authors.length - 1 && "; "}
+                                      </React.Fragment>
+                                    ))}
                       </div>
                       <div className="bookshelves-container">
                         <p className="titles">Categories:</p>
-                        <p>{book.bookshelves.join(', ')}</p>
+                        {book.bookshelves.map((bookshelf, index) => (
+                                  <React.Fragment key={bookshelf}>
+                                    <span
+                                      className="clickable-text"
+                                      onClick={() => handleBookshelfClick(bookshelf)}
+                                    >
+                                      {bookshelf}
+                                    </span>
+                                    {index < book.bookshelves.length - 1 && "; "}
+                                  </React.Fragment>
+                                ))}
                       </div>
                       <div className="language-container">
                         <p className="titles">Language:</p>
