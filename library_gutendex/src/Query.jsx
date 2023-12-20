@@ -311,8 +311,9 @@ const GutenbergSearch = () => {
         <ul>
           {isAuthorYearFilter
             ? filteredResults.map((book) => (
-                <li key={book.id} className="hover-effect">
-                  <div className="book-container">
+                <li key={book.id} className="hover-effect" >
+                   <div className="background-image" style={{ backgroundImage: `url(${book.formats['image/jpeg']})` }}></div>
+                  <div className="book-container"  >
                     <div className="info-container">
                       <div className="title-container">
                         <p className="titles">Title:</p>
@@ -345,6 +346,7 @@ const GutenbergSearch = () => {
               ))
             : sortedResults.map((book) => (
                 <li key={book.id} className="hover-effect">
+                   <div className="background-image" style={{ backgroundImage: `url(${book.formats['image/jpeg']})` }}></div>
                   <div className="book-container">
                     <div className="info-container">
                       <div className="title-container">
