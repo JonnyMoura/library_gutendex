@@ -341,9 +341,10 @@ body {
     }
   
    
-    .btn41,
-    .btn43 {
-      font-size: 1.3vw;
+    .btn-41,
+    .btn-43,
+    .btn41-43 {
+      font-size: 0.80vw;
     }
   
   
@@ -380,7 +381,8 @@ body {
   
     
     .pagination-container {
-      width: 100%;
+      width: 100vw;
+      
     }
 
 
