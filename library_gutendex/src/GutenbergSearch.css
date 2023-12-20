@@ -69,12 +69,14 @@ body {
     position: relative;
     display: inline-block;
     width: 6vw;
+    
   }
   
   .btn-41 {
     border: 2px solid rgb(0, 0, 0);
     z-index: 1;
     color: rgb(0, 0, 0);
+    
   }
   
   .btn-41:after {
@@ -86,12 +88,14 @@ body {
     left: 0;
     direction: rtl;
     z-index: -1;
+    
     background: rgb(0, 0, 0);
     transition: all 0.3s ease;
   }
   
   .btn-41:hover {
     color: rgb(255, 255, 255);
+
   }
   
   .btn-41:hover:after {
@@ -102,6 +106,7 @@ body {
   
   .btn-41:active {
     top: 2px;
+    align-items:center;
   }
   
   .search-form {
@@ -310,9 +315,8 @@ body {
 
   
     .search-form,
-    .filter-container,
-    .btn41,
-    .btn43 {
+    .filter-container
+     {
       margin-top: 1vh; 
     }
   
@@ -341,12 +345,7 @@ body {
     }
   
    
-    .btn-41,
-    .btn-43,
-    .btn41-43 {
-      font-size: 0.80vw;
-    }
-  
+    
   
     .search-form input,
     .search-form select {
@@ -390,4 +389,59 @@ body {
         
         font-size: 2vw;
       }
+
+
+
+      .btn41-43 {
+    
+        font-family: Arvo, sans-serif;
+        font-weight: 500;
+        background: transparent;
+        outline: none !important;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        position: relative;
+        display: inline-block;
+        width: 15vw;
+        font-size: 2vw;
+        
+      }
+      
+      .btn-41 {
+        border: 2px solid rgb(0, 0, 0);
+        z-index: 1;
+        color: rgb(0, 0, 0);
+        
+      }
+      
+      .btn-41:after {
+        position: absolute;
+        content: "";
+        width: 0;
+        height: 100%;
+        top: 0;
+        left: 0;
+        direction: rtl;
+        z-index: -1;
+        
+        background: rgb(0, 0, 0);
+        transition: all 0.3s ease;
+      }
+      
+      .btn-41:hover {
+        color: rgb(255, 255, 255);
+    
+      }
+      
+      .btn-41:hover:after {
+        left: auto;
+        right: 0;
+        width: 100%;
+      }
+      
+      .btn-41:active {
+        top: 2px;
+        align-items:center;
+      }
+      
   }
