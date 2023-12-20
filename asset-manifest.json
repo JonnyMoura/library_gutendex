@@ -1,17 +1,17 @@
 {
   "files": {
-    "main.css": "/library_gutendex/static/css/main.c483072f.css",
-    "main.js": "/library_gutendex/static/js/main.ef404977.js",
+    "main.css": "/library_gutendex/static/css/main.dc1e8b75.css",
+    "main.js": "/library_gutendex/static/js/main.8088ccdb.js",
     "static/js/787.eaa34915.chunk.js": "/library_gutendex/static/js/787.eaa34915.chunk.js",
     "static/media/NanumMyeongjo-Regular.ttf": "/library_gutendex/static/media/NanumMyeongjo-Regular.01893c39cd1a403ef0a5.ttf",
     "static/media/Arvo-Regular.ttf": "/library_gutendex/static/media/Arvo-Regular.e3d3d53c44db025c4592.ttf",
     "index.html": "/library_gutendex/index.html",
-    "main.c483072f.css.map": "/library_gutendex/static/css/main.c483072f.css.map",
-    "main.ef404977.js.map": "/library_gutendex/static/js/main.ef404977.js.map",
+    "main.dc1e8b75.css.map": "/library_gutendex/static/css/main.dc1e8b75.css.map",
+    "main.8088ccdb.js.map": "/library_gutendex/static/js/main.8088ccdb.js.map",
     "787.eaa34915.chunk.js.map": "/library_gutendex/static/js/787.eaa34915.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.c483072f.css",
-    "static/js/main.ef404977.js"
+    "static/css/main.dc1e8b75.css",
+    "static/js/main.8088ccdb.js"
   ]
 }
