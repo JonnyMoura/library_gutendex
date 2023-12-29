@@ -1,6 +1,6 @@
 import './App.css';
 
-import GutenbergSearch from './Query';
+import GutenbergSearch from './GutenbergSearch.jsx';
 
 function App() {
   return (
